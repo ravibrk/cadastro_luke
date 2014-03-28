@@ -1,0 +1,46 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.com.luke.cadastro.ListaAlunos" >
+
+    <item
+        android:id="@+id/novo"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_user_add"
+        android:title="Novo"/>
+    
+    <item
+        android:id="@+id/mapa"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_mapa"
+        android:title="Mapa"/>
+    
+    <item 
+        android:title="Opções"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_action_expand"
+        >
+        <menu >
+		    <item
+		        android:id="@+id/enviar_alunos"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_action_refresh"
+		        android:title="Sincronizar"/>
+		    
+		    <item
+		        android:id="@+id/receber_provas"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_action_download"
+		        android:title="Baixar Provas"/>
+		    
+		    <item
+		        android:id="@+id/preferencias"
+		        android:showAsAction="always"
+		        android:icon="@drawable/ic_action_settings"
+		        android:title="Preferencias"/>
+        </menu>
+    </item>
+    
+
+
+</menu>
