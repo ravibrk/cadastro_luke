@@ -14,7 +14,7 @@ import br.com.luke.cadastro.modelo.Aluno;
 public class AlunoDAO extends SQLiteOpenHelper {
 
 	private static final String DATABASE = "CadastroLuke";
-	private static final int VERSAO = 2;
+	private static final int VERSAO = 3;
 
 	public AlunoDAO(Context context) {
 		super(context, DATABASE, null, VERSAO);
@@ -37,7 +37,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String ddl = "CREATE TABLE Alunos (id PRIMARY KEY, "
+		String ddl = "CREATE TABLE Alunos (id PRIMARY KEY AUTOINCREMENT, "
 				+ " nome TEXT UNIQUE NOT NULL, telefone TEXT, "
 				+ " endereco TEXT, site TEXT, foto TEXT, nota REAL);";
 
@@ -77,6 +77,11 @@ public class AlunoDAO extends SQLiteOpenHelper {
 		}
 		
 		return alunos;
+	}
+
+	public void deletar(Aluno aluno) {
+		String[] args = {aluno.getId().toString()};
+		getWritableDatabase().delete("Alunos", "id=?", args);	
 	}
 
 }

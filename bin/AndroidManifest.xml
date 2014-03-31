@@ -16,7 +16,7 @@
         <activity android:name="br.com.luke.cadastro.Formulario"></activity>
         <activity
             android:name="br.com.luke.cadastro.ListaAlunos"
-            android:label="@string/app_name" >
+            android:label="@string/app_exhibition_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
