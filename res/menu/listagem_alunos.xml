@@ -1,20 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="br.com.luke.cadastro.ListaAlunos" >
-
-    <item
-        android:id="@+id/novo"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_action_user_add"
-        android:title="Novo"/>
-    
-    <item
-        android:id="@+id/mapa"
-        android:showAsAction="always"
-        android:icon="@drawable/ic_mapa"
-        android:title="Mapa"/>
-    
+    tools:context="com.proto.ussdrender.LoginActivity" >
     <item 
         android:title="Opções"
         android:showAsAction="always"

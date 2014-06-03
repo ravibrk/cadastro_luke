@@ -6,6 +6,7 @@
 
     <ImageView 
         android:src="@drawable/ic_launcher"
+        android:id="@+id/foto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

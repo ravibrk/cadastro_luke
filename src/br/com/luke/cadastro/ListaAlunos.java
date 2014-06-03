@@ -1,12 +1,25 @@
 package br.com.luke.cadastro;
 
+
 import java.util.List;
 
+
+
+
+
+
+import org.w3c.dom.ls.LSInput;
+
+import br.com.luke.cadastro.adapter.ListaAlunosAdapter;
 import br.com.luke.cadastro.dao.AlunoDAO;
 import br.com.luke.cadastro.modelo.Aluno;
+import br.com.luke.cadastro.util.AlunoConverter;
+import br.com.luke.cadastro.util.WebClient;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +30,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,10 +53,11 @@ public class ListaAlunos extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int posicao, long id) {
-				aluno = (Aluno) adapter.getItemAtPosition(posicao);
-				Toast.makeText(ListaAlunos.this,
-						"Clique na posicao " + posicao + " ID: " + aluno.getId().toString(), Toast.LENGTH_SHORT)
-						.show();
+				
+				Aluno alunoClicado = (Aluno) adapter.getItemAtPosition(posicao);
+				Intent editaAluno = new Intent(ListaAlunos.this, Formulario.class);
+				editaAluno.putExtra("alunoSelecionado", alunoClicado);
+				startActivity(editaAluno);
 			}
 		});
 
@@ -64,9 +77,32 @@ public class ListaAlunos extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 
-		menu.add("Ligar");
+		MenuItem ligar = menu.add("Ligar");
+		ligar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent irParaTelaDeDiscagem = new Intent(Intent.ACTION_CALL);
+				Toast.makeText(ListaAlunos.this, aluno.getTelefone(), Toast.LENGTH_LONG).show();
+				Uri msisdn = Uri.parse("tel:"+aluno.getTelefone());
+				irParaTelaDeDiscagem.setData(msisdn);
+				startActivity(irParaTelaDeDiscagem);
+				return false;
+			}
+		});
 		menu.add("Enviar SMS");
-		menu.add("Navegar no site");
+		MenuItem navegarNoSite = menu.add("Navegar no site");
+		navegarNoSite.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent irParaSite = new Intent(Intent.ACTION_VIEW);
+				Uri localSite = Uri.parse("http://"+aluno.getSite());
+				irParaSite.setData(localSite);
+				startActivity(irParaSite);
+				return false;
+			}
+		});
 		MenuItem deletar = menu.add("Deletar");
 		deletar.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			
@@ -98,13 +134,8 @@ public class ListaAlunos extends Activity {
 		AlunoDAO dao = new AlunoDAO(this);
 		List<Aluno> alunos = dao.getLista();
 		dao.close();
-
-		int layout = android.R.layout.simple_list_item_1;
-
-		ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, layout,
-				alunos);
-
-
+//		int layout = R.layout.linha_listagem;
+		ListaAlunosAdapter adapter = new ListaAlunosAdapter(alunos, ListaAlunos.this);
 		lista.setAdapter(adapter);
 	}
 
@@ -121,11 +152,31 @@ public class ListaAlunos extends Activity {
 		int itemClicado = item.getItemId();
 
 		switch (itemClicado) {
-		case R.id.novo:
-			Intent irParaFormulario = new Intent(this, Formulario.class);
-
-			startActivity(irParaFormulario);
-			break;
+//		case R.id.novo:
+//			Intent irParaFormulario = new Intent(this, Formulario.class);
+//
+//			startActivity(irParaFormulario);
+//			break;
+		case R.id.enviar_alunos:
+			Thread tarefaPesada = new Thread(){
+				@Override
+				public void run() {
+					String urlServer = "http://echo.jsontest.com";
+					
+					AlunoDAO dao = new AlunoDAO(ListaAlunos.this);
+					List<Aluno> alunos = dao.getLista();
+					dao.close();
+					String dadosJSON = new AlunoConverter().toJSON(alunos);
+					WebClient client = new WebClient(urlServer);
+					
+					String respostaJSON = client.post(dadosJSON);
+					
+					Log.i("Retorn da chamada:", respostaJSON);
+					
+//					Toast.makeText(ListaAlunos.this, respostaJSON, Toast.LENGTH_LONG);
+				}
+			};
+			tarefaPesada.start();
 
 		default:
 			break;

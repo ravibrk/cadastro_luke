@@ -1,7 +1,9 @@
 package br.com.luke.cadastro.modelo;
 
-public class Aluno {
-	private Long id;
+import java.io.Serializable;
+
+public class Aluno implements Serializable {
+	private Integer id;
 	private String nome;
 	private String site;
 	private String endereco;
@@ -14,10 +16,10 @@ public class Aluno {
 		return nome;
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNome() {
