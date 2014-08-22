@@ -1,4 +1,4 @@
 cadastro_luke
 =============
 
-Pequena aplicação de cadastro de alunos
+A basic Android CRUD
